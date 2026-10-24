@@ -2,7 +2,7 @@
 
 Turning a spare Dell laptop into a secure, remotely managed Linux server — and the foundation for a hybrid on-prem + Azure environment.
 
-**Status:** 🟢 Phases 0–1 complete · 🟡 Phase 2 (hardening) next
+**Status:** 🟢 Phases 0–2 complete · 🟡 Phase 3–4 (services) next
 
 ---
 
@@ -93,9 +93,13 @@ No ports are open on the home router. All access goes through Tailscale's encryp
 - Verified the SSH host key fingerprint on first connection.
 - **Tested from a phone on 5G mobile data** with Wi-Fi off, including after a full reboot.
 
-## Phase 2 — Hardening 🟡
+## Phase 2 — Hardening 🟢
 
-_Planned: SSH key authentication, password login disabled, `ufw` firewall allowing only Tailscale, `fail2ban`, unattended security upgrades._
+- **SSH key authentication** (ED25519 key generated on the phone in Termius); password and root logins disabled via a drop-in file in `/etc/ssh/sshd_config.d/`, verified with `sshd -T`.
+- **Firewall (`ufw`):** default deny incoming; only traffic on the `tailscale0` interface is allowed in, so the server is invisible to the local network and the internet.
+- **`fail2ban`** watching the SSH journal for brute-force attempts.
+- **Unattended security upgrades** enabled, with daily `apt` timers confirmed.
+- Changes made in a safe order (key login proven before passwords were disabled) with a second session open as a fallback.
 
 ## Phase 3 — Docker platform 🟡
 
@@ -131,13 +135,16 @@ I wanted to move the tailnet from a Google login to a Microsoft login (to align 
 **4. Verifying software provenance**
 Found two desktop packages for the same app. Checked `apt policy` and running process paths to confirm which was the official signed build and which was an unofficial third-party snap, then removed the unofficial one.
 
+**5. Excessive hard drive head parking**
+SMART showed about 34 load/unload cycles an hour, wearing the drive needlessly. Set Advanced Power Management to 254 and disabled standby, then verified: only 4 head parks in the following 45 hours (versus ~1,500 before), with the error counters stable.
+
 ## Skills demonstrated
 
-Linux administration (Ubuntu) · storage diagnostics (SMART) · disk management · zero-trust networking (Tailscale / WireGuard) · SSH · package and patch management · Docker · troubleshooting and documentation · Azure (planned: Arc, Monitor, Blob Storage)
+Linux administration (Ubuntu) · server hardening (SSH keys, ufw, fail2ban) · storage diagnostics (SMART) · disk management · zero-trust networking (Tailscale / WireGuard) · SSH · package and patch management · Docker · troubleshooting and documentation · Azure (planned: Arc, Monitor, Blob Storage)
 
 ## What's next
 
-- [ ] Phase 2 hardening
+- [x] Phase 2 hardening
 - [ ] RAM upgrade to 16GB
 - [ ] First services in Docker Compose
 - [ ] Offsite backups to Azure
