@@ -63,8 +63,8 @@ No ports are open on the home router. All access goes through Tailscale's encryp
 | --- | --- | --- |
 | 0 | Prepare hardware for 24/7 running | ✅ Done |
 | 1 | Secure remote access (SSH + Tailscale) | ✅ Done |
-| 2 | Hardening (SSH keys, firewall, fail2ban, auto-updates) | 🟡 Next |
-| 3 | Docker platform on `/data` | 🟡 Partly done |
+| 2 | Hardening (SSH keys, firewall, fail2ban, auto-updates) | ✅ Done |
+| 3 | Docker platform on `/data` | 🟡 Next |
 | 4 | Services (Samba, Syncthing, Immich) | ⬜ Planned |
 | 5 | 3-2-1 backups with restic to Azure Blob (Cold tier) | ⬜ Planned |
 | 6 | Azure Arc onboarding + Azure Monitor alerts | ⬜ Planned |
