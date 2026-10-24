@@ -138,9 +138,12 @@ Found two desktop packages for the same app. Checked `apt policy` and running pr
 **5. Excessive hard drive head parking**
 SMART showed about 34 load/unload cycles an hour, wearing the drive needlessly. Set Advanced Power Management to 254 and disabled standby, then verified: only 4 head parks in the following 45 hours (versus ~1,500 before), with the error counters stable.
 
+**5. Excessive hard drive head parking**
+SMART showed about 34 load/unload cycles an hour, wearing the drive needlessly. Set Advanced Power Management to 254 and disabled standby, then verified: only 4 head parks in the following 45 hours (versus ~1,500 before), with the error counters stable.
+
 ## Skills demonstrated
 
-Linux administration (Ubuntu) · server hardening (SSH keys, ufw, fail2ban) · storage diagnostics (SMART) · disk management · zero-trust networking (Tailscale / WireGuard) · SSH · package and patch management · Docker · troubleshooting and documentation · Azure (planned: Arc, Monitor, Blob Storage)
+Linux administration (Ubuntu) · server hardening (SSH keys, ufw, fail2ban) · server hardening (SSH keys, ufw, fail2ban) · storage diagnostics (SMART) · disk management · zero-trust networking (Tailscale / WireGuard) · SSH · package and patch management · Docker · troubleshooting and documentation · Azure (planned: Arc, Monitor, Blob Storage)
 
 ## What's next
 
