@@ -79,7 +79,7 @@ No ports are open on the home router. All access goes through Tailscale's encryp
 - **Reduced drive wear.** The HDD was parking its heads ~34 times per hour. Adjusted Advanced Power Management, cutting head parks from ~800/day to under 15/day.
 - **Freed the OS drive from 87% to 26% full.** Diagnosed with `du`, moved bulky user data to the HDD with `rsync` and symlinks (so application paths kept working), removed old snap revisions and set retention to 2.
 - **Removed unneeded software,** including an unofficial third-party app package identified by checking its publisher and running process path.
-- **Server behaviour.** Disabled sleep/suspend, kept the server running with the lid closed, and confirmed it recovers automatically after a reboot.
+- **Always-on server behaviour.** Masked all systemd sleep targets (`sleep`, `suspend`, `hibernate`, `hybrid-sleep`) so nothing can suspend the machine, set the lid switch to `ignore` through a `logind.conf.d` drop-in, and tested by SSHing in from a phone over Tailscale with the lid closed. Confirmed it recovers automatically after a reboot.
 - **Security patching.** Enabled Ubuntu Pro (ESM) for extended security updates.
 
 ## Phase 1 — Secure remote access ✅
@@ -138,12 +138,15 @@ Found two desktop packages for the same app. Checked `apt policy` and running pr
 **5. Excessive hard drive head parking**
 SMART showed about 34 load/unload cycles an hour, wearing the drive needlessly. Set Advanced Power Management to 254 and disabled standby, then verified: only 4 head parks in the following 45 hours (versus ~1,500 before), with the error counters stable.
 
-**5. Excessive hard drive head parking**
-SMART showed about 34 load/unload cycles an hour, wearing the drive needlessly. Set Advanced Power Management to 254 and disabled standby, then verified: only 4 head parks in the following 45 hours (versus ~1,500 before), with the error counters stable.
+**6. Server still able to sleep**
+A check showed the sleep targets were only `static`, not blocked, and no lid-switch rule existed, so the laptop could still suspend. Masked the four sleep targets, added a `logind` drop-in to ignore the lid, verified with `systemctl is-enabled`, then proved it with an SSH session from a phone with the lid shut.
+
+**7. Remote access lost after a phone update**
+After a major Android update, SSH from the phone failed with `Address resolution finished with error: no address`. The server was fine: the update had switched off the Tailscale VPN on the phone, so MagicDNS names could not resolve. Re-enabled Tailscale and set it as an Always-on VPN with unrestricted battery use so future updates and restarts cannot silently disconnect it.
 
 ## Skills demonstrated
 
-Linux administration (Ubuntu) · server hardening (SSH keys, ufw, fail2ban) · server hardening (SSH keys, ufw, fail2ban) · storage diagnostics (SMART) · disk management · zero-trust networking (Tailscale / WireGuard) · SSH · package and patch management · Docker · troubleshooting and documentation · Azure (planned: Arc, Monitor, Blob Storage)
+Linux administration (Ubuntu) · server hardening (SSH keys, ufw, fail2ban) · storage diagnostics (SMART) · disk management · zero-trust networking (Tailscale / WireGuard) · SSH · package and patch management · Docker · troubleshooting and documentation · Azure (planned: Arc, Monitor, Blob Storage)
 
 ## What's next
 
